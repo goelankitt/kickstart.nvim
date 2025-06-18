@@ -462,24 +462,33 @@ require('lazy').setup({
     end,
   },
 
+  -- {
+  --   'nvim-neo-tree/neo-tree.nvim',
+  --   branch = 'v3.x',
+  --   dependencies = {
+  --     'nvim-lua/plenary.nvim',
+  --     'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
+  --     'MunifTanjim/nui.nvim',
+  --   },
+  --   lazy = false, -- neo-tree will lazily load itself
+  --   opts = {
+  --     close_if_last_window = true,
+  --     enable_git_status = true,
+  --     filesystem = {
+  --       filtered_items = {
+  --         visible = true,
+  --       },
+  --     },
+  --   },
+  -- },
+  --
   {
-    'nvim-neo-tree/neo-tree.nvim',
-    branch = 'v3.x',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
-      'MunifTanjim/nui.nvim',
-    },
-    lazy = false, -- neo-tree will lazily load itself
-    opts = {
-      close_if_last_window = true,
-      enable_git_status = true,
-      filesystem = {
-        filtered_items = {
-          visible = true,
-        },
-      },
-    },
+    'preservim/nerdtree',
+    cmd = { 'NERDTreeToggle', 'NERDTreeFind', 'NERDTree' }, -- Lazy load on command
+    config = function()
+      -- Optional: Set up keymaps or custom config
+      vim.api.nvim_set_keymap('n', '<leader>e', ':NERDTreeToggle<CR>', { noremap = true, silent = true })
+    end,
   },
 
   -- LSP Plugins
