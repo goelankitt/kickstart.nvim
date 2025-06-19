@@ -173,6 +173,9 @@ vim.o.confirm = true
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
+-- Set a shortcut to open NERDTree with the current file
+vim.keymap.set('n', '<leader>n', '<cmd>NERDTreeFind<CR>', { desc = 'Open NERDTree for current file' })
+
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
@@ -216,6 +219,25 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
   callback = function()
     vim.hl.on_yank()
+  end,
+})
+
+-- Open NERDTree by default when vim launches
+vim.api.nvim_create_autocmd('VimEnter', {
+  pattern = '*',
+  callback = function()
+    if vim.fn.argc() == 0 then
+      vim.cmd 'NERDTree'
+    end
+  end,
+})
+
+-- Close NERDTree automatically when last buffer is closed
+vim.api.nvim_create_autocmd('BufEnter', {
+  callback = function()
+    if vim.fn.winnr '$' == 1 and vim.bo.filetype == 'nerdtree' then
+      vim.cmd 'quit'
+    end
   end,
 })
 
@@ -485,10 +507,7 @@ require('lazy').setup({
   {
     'preservim/nerdtree',
     cmd = { 'NERDTreeToggle', 'NERDTreeFind', 'NERDTree' }, -- Lazy load on command
-    config = function()
-      -- Optional: Set up keymaps or custom config
-      vim.api.nvim_set_keymap('n', '<leader>e', ':NERDTreeToggle<CR>', { noremap = true, silent = true })
-    end,
+    config = function() end,
   },
 
   -- LSP Plugins
